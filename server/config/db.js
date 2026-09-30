@@ -1,36 +1,22 @@
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
-  const primaryUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/foodsource';
+  const mongoUri = process.env.MONGO_URI;
+
+  if (!mongoUri) {
+    console.warn(`⚠️ Warning: MONGO_URI environment variable is not defined in Render Environment settings.`);
+    console.warn(`👉 Please add MONGO_URI in Render Dashboard -> Environment -> Environment Variables.`);
+    return;
+  }
 
   try {
-    const conn = await mongoose.connect(primaryUri, {
-      serverSelectionTimeoutMS: 5000
+    const conn = await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 10000
     });
-    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+    console.log(`✅ MongoDB Connected Successfully: ${conn.connection.host}`);
   } catch (error) {
-    if (process.env.NODE_ENV === 'production' || process.env.MONGO_URI) {
-      console.error(`❌ MongoDB Connection Error: ${error.message}`);
-      process.exit(1);
-    }
-
-    console.log(`⚠️ Local MongoDB service not detected on 27017 (${error.message}).`);
-
-    try {
-      const { MongoMemoryServer } = require('mongodb-memory-server');
-      const seedDatabase = require('../seed/seedHelper');
-
-      const mongoServer = await MongoMemoryServer.create();
-      const mongoUri = mongoServer.getUri();
-      await mongoose.connect(mongoUri);
-      console.log(`✅ In-Memory MongoDB Connected: ${mongoUri}`);
-
-      await seedDatabase();
-      console.log(`🌱 Demo dataset & accounts seeded automatically!`);
-    } catch (memError) {
-      console.error(`❌ Failed to connect to MongoDB: ${memError.message}`);
-      process.exit(1);
-    }
+    console.error(`❌ MongoDB Connection Error: ${error.message}`);
+    console.error(`👉 Ensure your MongoDB Atlas cluster allows connections from anywhere (0.0.0.0/0 in Network Access).`);
   }
 };
 
