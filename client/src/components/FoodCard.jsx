@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
-import { Star, ShoppingCart } from 'lucide-react';
+import { Star, ShoppingBag, Clock, Flame } from 'lucide-react';
 
 const FoodCard = ({ food }) => {
   const [quantity, setQuantity] = useState(1);
@@ -13,61 +13,71 @@ const FoodCard = ({ food }) => {
   };
 
   return (
-    <div className="food-menu-box">
-      <div className="food-menu-img">
+    <div className="food-card-modern">
+      <div className="food-card-img-container">
         <Link to={`/food/${food._id}`}>
           <img
-            src={food.image || '/img/food/p1.jpg'}
+            src={food.image}
             alt={food.name}
-            className="img-responsive img-curve"
-            onError={(e) => { e.target.src = '/img/food/p1.jpg'; }}
+            onError={(e) => {
+              e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80';
+            }}
           />
         </Link>
+        <div className="food-card-tag">
+          <Flame size={12} color="#ff385c" style={{ display: 'inline', marginRight: '3px' }} />
+          Bestseller
+        </div>
+        <div className="food-card-rating">
+          <Star size={13} fill="#ffb400" color="#ffb400" />
+          <span>{food.rating || '4.8'}</span>
+        </div>
       </div>
 
-      <div className="food-menu-desc">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="food-card-body">
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span className="food-card-category">{food.category}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#636e72' }}>
+              <Clock size={12} />
+              <span>20-30 min</span>
+            </div>
+          </div>
+
           <Link to={`/food/${food._id}`}>
-            <h4>{food.name}</h4>
+            <h3 className="food-card-title">{food.name}</h3>
           </Link>
-          <span style={{ fontSize: '12px', background: '#f1f2f6', padding: '2px 8px', borderRadius: '10px', color: '#57606f', fontWeight: '500' }}>
-            {food.category}
-          </span>
+
+          <p className="food-card-desc">
+            {food.description.length > 80
+              ? `${food.description.substring(0, 80)}...`
+              : food.description}
+          </p>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '4px 0' }}>
-          <p className="food-price">${food.price.toFixed(2)}</p>
-          <div style={{ display: 'flex', alignItems: 'center', fontSize: '13px', color: '#ffa502', fontWeight: '600' }}>
-            <Star size={14} fill="#ffa502" style={{ marginRight: '2px' }} />
-            {food.rating || '4.5'}
-          </div>
+        <div className="food-card-footer">
+          <div className="food-card-price">${food.price.toFixed(2)}</div>
+
+          {food.available !== false ? (
+            <div className="food-card-actions">
+              <input
+                type="number"
+                min="1"
+                max="20"
+                value={quantity}
+                onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                className="qty-input"
+              />
+              <button onClick={handleAddToCart} className="btn-primary" style={{ padding: '8px 16px', fontSize: '13px' }}>
+                <ShoppingBag size={15} /> Add
+              </button>
+            </div>
+          ) : (
+            <span style={{ color: '#e74c3c', fontWeight: '600', fontSize: '13px' }}>
+              Out of Stock
+            </span>
+          )}
         </div>
-
-        <p className="food-details">
-          {food.description.length > 70
-            ? `${food.description.substring(0, 70)}...`
-            : food.description}
-        </p>
-
-        {food.available !== false ? (
-          <div className="food-actions">
-            <input
-              type="number"
-              min="1"
-              max="20"
-              value={quantity}
-              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-              className="qty-input"
-            />
-            <button onClick={handleAddToCart} className="btn-primary" style={{ fontSize: '14px', padding: '8px 16px' }}>
-              <ShoppingCart size={16} /> Add To Cart
-            </button>
-          </div>
-        ) : (
-          <div style={{ color: '#ff4d4d', fontWeight: '600', fontSize: '14px', marginTop: '10px' }}>
-            Currently Unavailable
-          </div>
-        )}
       </div>
     </div>
   );
