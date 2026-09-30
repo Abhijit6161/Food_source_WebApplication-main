@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { CartContext } from '../context/CartContext';
-import { ShoppingBag, User as UserIcon, LogOut, ShieldAlert } from 'lucide-react';
+import { ShoppingBag, User as UserIcon, LogOut, ShieldAlert, Utensils } from 'lucide-react';
 
 const Navbar = () => {
   const { user, logout, isAdmin } = useContext(AuthContext);
@@ -17,11 +17,24 @@ const Navbar = () => {
   return (
     <header className="navbar-fixed-top">
       <div className="container navbar-container">
-        {/* Brand Logo & Name */}
+        {/* Clean Single Brand Name & Logo */}
         <div className="logo">
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-            <img src="/img/logo.png" alt="FoodSource Logo" style={{ height: '34px', width: 'auto' }} />
-            <span style={{ fontSize: '23px', fontWeight: '800', color: '#ff385c', letterSpacing: '-0.5px' }}>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+            <div
+              style={{
+                background: 'linear-gradient(135deg, #ff385c 0%, #e02849 100%)',
+                color: '#ffffff',
+                borderRadius: '10px',
+                padding: '6px 8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 3px 10px rgba(255, 56, 92, 0.3)'
+              }}
+            >
+              <Utensils size={20} />
+            </div>
+            <span style={{ fontSize: '24px', fontWeight: '800', color: '#ff385c', letterSpacing: '-0.5px' }}>
               Food<span style={{ color: '#1e2329' }}>Source</span>
             </span>
           </Link>
