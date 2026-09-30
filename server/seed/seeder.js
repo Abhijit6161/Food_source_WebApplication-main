@@ -13,7 +13,7 @@ const importData = async () => {
 
     await seedDatabase();
 
-    console.log('✅ Database Seeding Completed Successfully with 17 Foods & 8 Categories!');
+    console.log('✅ Database Seeding Completed Successfully with 40 Food Items (5 per Category across 8 Categories)!');
     process.exit(0);
   } catch (error) {
     console.error(`Error during seeding: ${error.message}`);
