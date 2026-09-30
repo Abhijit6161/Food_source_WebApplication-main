@@ -17,10 +17,13 @@ const Navbar = () => {
   return (
     <header className="navbar-fixed-top">
       <div className="container navbar-container">
-        {/* Logo */}
+        {/* Brand Logo & Name */}
         <div className="logo">
-          <Link to="/">
-            <img src="/img/logo.png" alt="FoodSource Logo" className="img-responsive" />
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
+            <img src="/img/logo.png" alt="FoodSource Logo" style={{ height: '34px', width: 'auto' }} />
+            <span style={{ fontSize: '23px', fontWeight: '800', color: '#ff385c', letterSpacing: '-0.5px' }}>
+              Food<span style={{ color: '#1e2329' }}>Source</span>
+            </span>
           </Link>
         </div>
 
@@ -60,7 +63,7 @@ const Navbar = () => {
                   <button
                     onClick={handleLogout}
                     className="btn-outline"
-                    style={{ padding: '4px 10px', fontSize: '13px' }}
+                    style={{ padding: '5px 12px', fontSize: '13px' }}
                   >
                     <LogOut size={14} style={{ marginRight: '4px' }} /> Logout
                   </button>
@@ -72,21 +75,21 @@ const Navbar = () => {
                   <NavLink to="/login">Login</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/register" className="btn-primary" style={{ color: '#fff', padding: '6px 14px' }}>
+                  <NavLink to="/register" className="btn-primary" style={{ color: '#fff', padding: '6px 16px' }}>
                     Register
                   </NavLink>
                 </li>
               </>
             )}
 
-            {/* Shopping Cart Icon Trigger */}
-            <li>
+            {/* Shopping Cart Drawer Trigger */}
+            <li style={{ position: 'relative' }}>
               <button
                 onClick={() => setIsDrawerOpen(true)}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', position: 'relative' }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', position: 'relative', display: 'flex', alignItems: 'center' }}
                 title="View Shopping Cart"
               >
-                <ShoppingBag size={24} color="#6c5ce7" />
+                <ShoppingBag size={24} color="#ff385c" />
                 {totalItemCount > 0 && <span className="badge">{totalItemCount}</span>}
               </button>
             </li>
