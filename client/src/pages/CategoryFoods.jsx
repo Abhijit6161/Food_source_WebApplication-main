@@ -28,13 +28,13 @@ const CategoryFoods = () => {
   }, [categoryName]);
 
   return (
-    <div style={{ padding: '40px 0' }}>
+    <div style={{ padding: '35px 0 60px 0' }}>
       <div className="container">
-        <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginBottom: '20px' }}>
+        <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginBottom: '20px', fontSize: '13px' }}>
           <ArrowLeft size={16} /> Back to Home
         </Link>
 
-        <h2 className="text-center">{categoryName} Selection</h2>
+        <h2 className="text-center" style={{ fontSize: '28px', fontWeight: '800' }}>{categoryName} Selection</h2>
         <div className="heading-border"></div>
 
         {loading ? (
@@ -42,14 +42,14 @@ const CategoryFoods = () => {
         ) : error ? (
           <ErrorMessage message={error} />
         ) : foods.length === 0 ? (
-          <div className="text-center" style={{ padding: '60px 0' }}>
+          <div className="text-center" style={{ padding: '50px 0', background: '#fff', borderRadius: '16px' }}>
             <h3>No foods available in category: {categoryName}</h3>
-            <Link to="/menu" className="btn-primary" style={{ marginTop: '20px' }}>
+            <Link to="/menu" className="btn-primary" style={{ marginTop: '15px' }}>
               View All Foods
             </Link>
           </div>
         ) : (
-          <div className="grid-2">
+          <div className="food-grid">
             {foods.map((food) => (
               <FoodCard key={food._id} food={food} />
             ))}
