@@ -1,3 +1,6 @@
+require('dotenv').config();
+const connectDB = require('../config/db');
+
 const User = require('../models/User');
 const Food = require('../models/Food');
 const Category = require('../models/Category');
@@ -419,6 +422,8 @@ const seedFoods = [
 
 const seedDatabase = async () => {
   try {
+    await connectDB();
+
     await User.deleteMany({});
     await Food.deleteMany({});
     await Category.deleteMany({});

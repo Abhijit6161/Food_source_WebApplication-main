@@ -4,19 +4,19 @@ const connectDB = async () => {
   const mongoUri = process.env.MONGO_URI;
 
   if (!mongoUri) {
-    console.warn(`⚠️ Warning: MONGO_URI environment variable is not defined in Render Environment settings.`);
-    console.warn(`👉 Please add MONGO_URI in Render Dashboard -> Environment -> Environment Variables.`);
-    return;
+    throw new Error('MONGO_URI is not defined');
   }
 
   try {
     const conn = await mongoose.connect(mongoUri, {
       serverSelectionTimeoutMS: 10000
     });
-    console.log(`✅ MongoDB Connected Successfully: ${conn.connection.host}`);
+
+    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+    return conn;
   } catch (error) {
     console.error(`❌ MongoDB Connection Error: ${error.message}`);
-    console.error(`👉 Ensure your MongoDB Atlas cluster allows connections from anywhere (0.0.0.0/0 in Network Access).`);
+    throw error;
   }
 };
 
