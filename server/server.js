@@ -3,6 +3,10 @@ const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
 const dotenv = require('dotenv');
+
+// 1. Load environment variables before accessing process.env.MONGO_URI
+dotenv.config({ path: path.join(__dirname, '.env') });
+
 const connectDB = require('./config/db');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware');
 
@@ -13,11 +17,6 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-
-dotenv.config();
-
-// Connect to MongoDB
-connectDB();
 
 const app = express();
 
@@ -68,6 +67,17 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// 2. Ensure MongoDB connects successfully BEFORE starting Express listener
+const startServer = async () => {
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error(`❌ Server startup failed: ${error.message}`);
+    process.exit(1);
+  }
+};
+
+startServer();
